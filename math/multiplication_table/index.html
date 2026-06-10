@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tafels werkblad · Training</title>
+  <style>
+    :root {
+      --bg:           #f1f5f9;
+      --surface:      #ffffff;
+      --primary:      #3b82f6;
+      --primary-soft: #eff6ff;
+      --success:      #16a34a;
+      --success-soft: #dcfce7;
+      --error:        #dc2626;
+      --error-soft:   #fee2e2;
+      --text:         #0f172a;
+      --text-muted:   #64748b;
+      --border:       #e2e8f0;
+      --shadow-sm:    0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.06);
+      --shadow-md:    0 4px 24px rgba(0,0,0,.08), 0 2px 6px rgba(0,0,0,.04);
+      --r-lg:         20px;
+      --r-md:         12px;
+      --r-sm:          8px;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 28px 16px 48px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 800;
+      margin-bottom: 18px;
+      text-align: center;
+    }
+
+    /* ── Setup screen ─────────────────────────────────────────────────── */
+    #setup {
+      width: 100%;
+      max-width: 480px;
+      background: var(--surface);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+      padding: 24px;
+    }
+
+    #setup p {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin-bottom: 16px;
+    }
+
+    .number-grid {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+
+    .number-btn {
+      aspect-ratio: 1;
+      border: 2px solid var(--border);
+      background: var(--surface);
+      border-radius: var(--r-md);
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--text);
+      cursor: pointer;
+      transition: all .15s ease;
+    }
+
+    .number-btn:hover {
+      border-color: var(--primary);
+    }
+
+    .number-btn.selected {
+      background: var(--primary);
+      border-color: var(--primary);
+      color: #fff;
+    }
+
+    .start-btn {
+      width: 100%;
+      padding: 14px;
+      border: none;
+      border-radius: var(--r-md);
+      background: var(--primary);
+      color: #fff;
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity .15s ease;
+    }
+
+    .start-btn:disabled {
+      opacity: .4;
+      cursor: not-allowed;
+    }
+
+    /* ── Test screen ──────────────────────────────────────────────────── */
+    #test {
+      display: none;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-bottom: 18px;
+    }
+
+    .timer {
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      border-radius: 99px;
+      padding: 8px 22px;
+      font-size: 20px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      color: var(--primary);
+    }
+
+    .blocks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .block {
+      background: var(--surface);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-sm);
+      padding: 16px;
+    }
+
+    .exercise {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 16px;
+      font-weight: 600;
+      padding: 6px 0;
+      border-radius: var(--r-sm);
+    }
+
+    .exercise input {
+      width: 56px;
+      padding: 6px;
+      font-size: 16px;
+      font-weight: 700;
+      text-align: center;
+      border: 2px solid var(--border);
+      border-radius: var(--r-sm);
+      font-family: inherit;
+    }
+
+    .exercise input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    .exercise.correct {
+      background: var(--success-soft);
+    }
+
+    .exercise.correct input {
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .exercise.incorrect {
+      background: var(--error-soft);
+    }
+
+    .exercise.incorrect input {
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    /* ── Bottom controls / stats ─────────────────────────────────────── */
+    .controls {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .action-btn {
+      padding: 14px 40px;
+      border: none;
+      border-radius: var(--r-md);
+      font-size: 16px;
+      font-weight: 700;
+      cursor: pointer;
+      color: #fff;
+    }
+
+    .action-btn.finish {
+      background: var(--primary);
+    }
+
+    .action-btn.restart {
+      background: var(--success);
+      display: none;
+    }
+
+    .stats {
+      display: none;
+      background: var(--surface);
+      box-shadow: var(--shadow-sm);
+      border-radius: var(--r-md);
+      padding: 16px 24px;
+      text-align: center;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .stats .stat-line {
+      margin: 4px 0;
+    }
+
+    .stats .stat-success { color: var(--success); }
+    .stats .stat-error { color: var(--error); }
+  </style>
+</head>
+<body>
+
+  <h1>Tafels werkblad · Training</h1>
+
+  <div id="setup">
+    <p>Kies de tafel(s) waarmee je wilt oefenen (1-10):</p>
+    <div class="number-grid" id="numberGrid"></div>
+    <button class="start-btn" id="startBtn" disabled>Start</button>
+  </div>
+
+  <div id="test">
+    <div class="top-bar">
+      <div class="timer" id="timer">00:00</div>
+    </div>
+    <div class="blocks-grid" id="blocksGrid"></div>
+    <div class="controls">
+      <button class="action-btn finish" id="finishBtn">Finish</button>
+      <button class="action-btn restart" id="restartBtn">Restart</button>
+      <div class="stats" id="stats"></div>
+    </div>
+  </div>
+
+  <script>
+    const numberGrid = document.getElementById('numberGrid');
+    const startBtn = document.getElementById('startBtn');
+    const setupView = document.getElementById('setup');
+    const testView = document.getElementById('test');
+    const blocksGrid = document.getElementById('blocksGrid');
+    const finishBtn = document.getElementById('finishBtn');
+    const restartBtn = document.getElementById('restartBtn');
+    const statsEl = document.getElementById('stats');
+    const timerEl = document.getElementById('timer');
+
+    const BLOCK_COUNT = 9;
+    const ROWS_PER_BLOCK = 5;
+
+    let selectedNumbers = new Set();
+    let timerInterval = null;
+    let startTime = null;
+    let exercises = [];
+
+    // Build number picker 1-10
+    for (let n = 1; n <= 10; n++) {
+      const btn = document.createElement('button');
+      btn.className = 'number-btn';
+      btn.textContent = n;
+      btn.addEventListener('click', () => {
+        btn.classList.toggle('selected');
+        if (selectedNumbers.has(n)) {
+          selectedNumbers.delete(n);
+        } else {
+          selectedNumbers.add(n);
+        }
+        startBtn.disabled = selectedNumbers.size === 0;
+      });
+      numberGrid.appendChild(btn);
+    }
+
+    startBtn.addEventListener('click', startTest);
+    finishBtn.addEventListener('click', finishTest);
+    restartBtn.addEventListener('click', restartTest);
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function pickFrom(arr) {
+      return arr[randomInt(0, arr.length - 1)];
+    }
+
+    function generateExercises() {
+      const numbers = Array.from(selectedNumbers);
+      const list = [];
+      for (let i = 0; i < BLOCK_COUNT * ROWS_PER_BLOCK; i++) {
+        const tableNumber = pickFrom(numbers);
+        const multiplier = randomInt(1, 10);
+        const swapped = Math.random() < 0.5;
+        const left = swapped ? multiplier : tableNumber;
+        const right = swapped ? tableNumber : multiplier;
+        list.push({
+          left,
+          right,
+          answer: tableNumber * multiplier
+        });
+      }
+      return list;
+    }
+
+    function renderExercises() {
+      blocksGrid.innerHTML = '';
+      for (let b = 0; b < BLOCK_COUNT; b++) {
+        const block = document.createElement('div');
+        block.className = 'block';
+        for (let r = 0; r < ROWS_PER_BLOCK; r++) {
+          const ex = exercises[b * ROWS_PER_BLOCK + r];
+          const row = document.createElement('div');
+          row.className = 'exercise';
+
+          const label = document.createElement('span');
+          label.textContent = `${ex.left} x ${ex.right} =`;
+
+          const input = document.createElement('input');
+          input.type = 'text';
+          input.inputMode = 'numeric';
+          input.dataset.answer = ex.answer;
+          input.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+              e.preventDefault();
+              const allInputs = Array.from(document.querySelectorAll('.exercise input'));
+              const idx = allInputs.indexOf(input);
+              const next = allInputs[idx + 1];
+              if (next) next.focus();
+            }
+          });
+
+          row.appendChild(label);
+          row.appendChild(input);
+          block.appendChild(row);
+        }
+        blocksGrid.appendChild(block);
+      }
+    }
+
+    function startTest() {
+      exercises = generateExercises();
+      renderExercises();
+
+      setupView.style.display = 'none';
+      testView.style.display = 'block';
+      finishBtn.style.display = 'inline-block';
+      restartBtn.style.display = 'none';
+      statsEl.style.display = 'none';
+
+      startTime = Date.now();
+      updateTimer();
+      timerInterval = setInterval(updateTimer, 1000);
+    }
+
+    function updateTimer() {
+      const elapsed = Math.floor((Date.now() - startTime) / 1000);
+      timerEl.textContent = formatTime(elapsed);
+    }
+
+    function formatTime(totalSeconds) {
+      const minutes = Math.floor(totalSeconds / 60).toString().padStart(2, '0');
+      const seconds = (totalSeconds % 60).toString().padStart(2, '0');
+      return `${minutes}:${seconds}`;
+    }
+
+    function finishTest() {
+      clearInterval(timerInterval);
+      const elapsedSeconds = Math.floor((Date.now() - startTime) / 1000);
+      timerEl.textContent = formatTime(elapsedSeconds);
+
+      let correctCount = 0;
+      let incorrectCount = 0;
+
+      document.querySelectorAll('.exercise').forEach(row => {
+        const input = row.querySelector('input');
+        const correctAnswer = Number(input.dataset.answer);
+        const userAnswer = Number(input.value);
+        const isCorrect = input.value.trim() !== '' && userAnswer === correctAnswer;
+
+        row.classList.remove('correct', 'incorrect');
+        if (isCorrect) {
+          row.classList.add('correct');
+          correctCount++;
+        } else {
+          row.classList.add('incorrect');
+          incorrectCount++;
+        }
+        input.disabled = true;
+      });
+
+      finishBtn.style.display = 'none';
+      restartBtn.style.display = 'inline-block';
+
+      statsEl.style.display = 'block';
+      statsEl.innerHTML = `
+        <div class="stat-line stat-success">Goed: ${correctCount}</div>
+        <div class="stat-line stat-error">Fout: ${incorrectCount}</div>
+        <div class="stat-line">Tijd: ${formatTime(elapsedSeconds)}</div>
+      `;
+    }
+
+    function restartTest() {
+      clearInterval(timerInterval);
+      timerEl.textContent = '00:00';
+      statsEl.style.display = 'none';
+      blocksGrid.innerHTML = '';
+      testView.style.display = 'none';
+      setupView.style.display = 'block';
+    }
+  </script>
+</body>
+</html>
