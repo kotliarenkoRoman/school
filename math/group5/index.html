@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Groep 3 · Jaartoets Rekenen</title>
+  <title>Groep 5 · Jaartoets Rekenen</title>
   <style>
     :root {
       --bg:           #f1f5f9;
@@ -555,9 +555,9 @@
       <li class="nav-item nav-dropdown" id="mathDrop">
         <button class="nav-link active" id="mathDropBtn" aria-expanded="false">🧮 Math <span class="caret">▾</span></button>
         <ul class="nav-menu__sub">
-          <li><a class="nav-link active" href="../../math/group3/index.html">🔢 Group 3</a></li>
+          <li><a class="nav-link" href="../../math/group3/index.html">🔢 Group 3</a></li>
           <li><a class="nav-link" href="../../math/group4/index.html">🔢 Group 4</a></li>
-          <li><a class="nav-link" href="../../math/group5/index.html">🔢 Group 5</a></li>
+          <li><a class="nav-link active" href="../../math/group5/index.html">🔢 Group 5</a></li>
         </ul>
       </li>
       <li class="nav-item"><a class="nav-link" href="../../math/multiplication_table/index.html">✖️ Multiplication Table</a></li>
@@ -567,7 +567,7 @@
 
 <main class="page">
 <header class="site-header">
-  <div class="site-header__eyebrow">Groep 3 · Jaartoets Rekenen</div>
+  <div class="site-header__eyebrow">Groep 5 · Jaartoets Rekenen</div>
   <div class="progress-rail">
     <div class="progress-fill" id="progFill"></div>
   </div>
@@ -634,31 +634,6 @@ const clockSVG = (h, m) => {
   </svg>`;
 };
 
-const dotsSVG = n => {
-  const dots = [];
-  const cols = n <= 5 ? n : 5;
-  const rows = Math.ceil(n / 5);
-  const cx = 50, cy = 50, spacing = 22, r = 8;
-  const startX = cx - ((Math.min(n, 5) - 1) * spacing) / 2;
-  const startY = cy - ((rows - 1) * spacing) / 2;
-  for (let i = 0; i < n; i++) {
-    const col = i % 5, row = Math.floor(i / 5);
-    dots.push(`<circle cx="${startX + col * spacing}" cy="${startY + row * spacing}" r="${r}" fill="#3b82f6"/>`);
-  }
-  return `<svg viewBox="0 0 100 100" width="140" height="140" xmlns="http://www.w3.org/2000/svg">${dots.join('')}</svg>`;
-};
-
-const shapeSVG = name => {
-  const fill = '#eff6ff', stroke = '#3b82f6', sw = 3;
-  const shapes = {
-    cirkel:     `<circle cx="50" cy="50" r="38" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
-    driehoek:   `<polygon points="50,10 90,88 10,88" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`,
-    vierkant:   `<rect x="12" y="12" width="76" height="76" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="3"/>`,
-    rechthoek:  `<rect x="6" y="22" width="88" height="56" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="3"/>`,
-  };
-  return `<svg viewBox="0 0 100 100" width="130" height="130" xmlns="http://www.w3.org/2000/svg">${shapes[name]||''}</svg>`;
-};
-
 const rulerSVG = lengths => {
   const maxLen = 10, barH = 22, trackW = 220, labels = ['A','B'];
   const colors = ['#3b82f6','#f87171'];
@@ -673,108 +648,126 @@ const rulerSVG = lengths => {
   return `<svg viewBox="0 0 270 106" width="270" height="106" xmlns="http://www.w3.org/2000/svg">${rows.join('')}</svg>`;
 };
 
-const spatialSVG = () =>
-  `<svg viewBox="0 0 120 90" width="180" height="135" xmlns="http://www.w3.org/2000/svg">
-    <line x1="15" y1="58" x2="105" y2="58" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
-    <circle cx="60" cy="30" r="12" fill="#3b82f6"/>
-    <text x="60" y="78" text-anchor="middle" font-size="10" font-family="system-ui" fill="#94a3b8">lijn</text>
-  </svg>`;
+const fractionBarSVG = (num, den) => {
+  const trackW = 240, barH = 44, cellW = trackW / den;
+  const cells = Array.from({length: den}, (_, i) => {
+    const x = i * cellW;
+    const filled = i < num;
+    return `<rect x="${x.toFixed(2)}" y="0" width="${cellW.toFixed(2)}" height="${barH}" fill="${filled ? '#3b82f6' : '#eff6ff'}" stroke="#94a3b8" stroke-width="1.5"/>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${trackW} ${barH}" width="240" height="44" xmlns="http://www.w3.org/2000/svg">${cells}</svg>`;
+};
 
 /* ── Data ────────────────────────────────────────────────────────────── */
 const SECTIONS = [
-  { id:1, label:'Getallen',            icon:'🔢', count:8  },
-  { id:2, label:'Optellen & Aftrekken',icon:'➕', count:10 },
-  { id:3, label:'Meten & Tijd',        icon:'⏰', count:5  },
-  { id:4, label:'Vormen & Ruimte',     icon:'🔷', count:4  },
-  { id:5, label:'Woordproblemen',      icon:'📖', count:3  },
+  { id:1, label:'Getallen tot 1000',    icon:'🔢', count:7 },
+  { id:2, label:'Optellen & Aftrekken', icon:'➕', count:8 },
+  { id:3, label:'Tafels & Delen',       icon:'✖️', count:6 },
+  { id:4, label:'Breuken',              icon:'🍕', count:4 },
+  { id:5, label:'Klok & Tijd',          icon:'⏰', count:4 },
+  { id:6, label:'Geld & Meten',         icon:'💶', count:4 },
+  { id:7, label:'Woordproblemen',       icon:'📖', count:4 },
 ];
 
 const Q = [
-  /* ── Sectie 1: Getallen ────────────────────────────────────────────── */
-  { s:1, text:'Welk getal ontbreekt?\n14, __, 16',
-    opts:['13','15','17','12'], ans:'15' },
+  /* ── Sectie 1: Getallen tot 1000 ──────────────────────────────────── */
+  { s:1, text:'Welk getal ontbreekt?\n298, __, 300',
+    opts:['297','298','299','301'], ans:'299' },
 
   { s:1, text:'Welk getal is het grootst?',
-    opts:['47','74','57','45'], ans:'74' },
+    opts:['431','413','341','314'], ans:'431' },
 
-  { s:1, text:'Is het getal 8 even of oneven?',
-    opts:['Even','Oneven','Geen van beide','Ik weet het niet'], ans:'Even' },
+  { s:1, text:'Rond 380 af op honderdtallen.',
+    opts:['300','350','400','450'], ans:'400' },
 
-  { s:1, text:'34 = __ tientallen + __ eenheden',
-    opts:['3 + 4','4 + 3','3 + 3','4 + 4'],
-    display:['3 tientallen + 4 eenheden','4 tientallen + 3 eenheden','3 tientallen + 3 eenheden','4 tientallen + 4 eenheden'],
-    ans:'3 + 4' },
+  { s:1, text:'Hoeveel honderdtallen zitten er in 645?',
+    opts:['5','6','7','64'], ans:'6' },
 
-  { s:1, text:'Zet van klein naar groot:\n52, 25, 75',
-    opts:['25 → 52 → 75','52 → 25 → 75','75 → 52 → 25','25 → 75 → 52'], ans:'25 → 52 → 75' },
+  { s:1, text:'Zet van klein naar groot:\n512, 215, 521',
+    opts:['215 → 512 → 521','512 → 215 → 521','521 → 512 → 215','215 → 521 → 512'], ans:'215 → 512 → 521' },
 
-  { s:1, text:'Welk getal is "vijftien"?',
-    opts:['50','5','15','51'], ans:'15' },
+  { s:1, text:'Tel verder met stappen van 100:\n200, 300, 400, __',
+    opts:['450','500','550','600'], ans:'500' },
 
-  { s:1, text:'Hoeveel stippen zie je?',
-    opts:['6','7','8','9'], ans:'7', vis:{type:'dots',n:7} },
-
-  { s:1, text:'Tel verder met stappen van 2:\n4, 6, 8, __',
-    opts:['9','10','11','12'], ans:'10' },
+  { s:1, text:'Welk getal is "driehonderdvijfenzeventig"?',
+    opts:['357','375','275','325'], ans:'375' },
 
   /* ── Sectie 2: Optellen & Aftrekken ───────────────────────────────── */
-  { s:2, text:'4 + 3 = ?',  opts:['6','7','8','5'],  ans:'7'  },
-  { s:2, text:'6 + 2 = ?',  opts:['7','8','9','6'],  ans:'8'  },
-  { s:2, text:'5 + 5 = ?',  opts:['9','10','11','8'], ans:'10' },
-  { s:2, text:'3 + 4 = ?',  opts:['5','6','7','8'],  ans:'7'  },
-  { s:2, text:'9 + 1 = ?',  opts:['8','9','10','11'], ans:'10' },
-  { s:2, text:'9 − 4 = ?',  opts:['3','4','5','6'],  ans:'5'  },
-  { s:2, text:'7 − 3 = ?',  opts:['3','4','5','6'],  ans:'4'  },
-  { s:2, text:'10 − 6 = ?', opts:['3','4','5','6'],  ans:'4'  },
-  { s:2, text:'8 + 6 = ?',  opts:['12','13','14','15'], ans:'14' },
-  { s:2, text:'14 − 5 = ?', opts:['7','8','9','10'], ans:'9'  },
+  { s:2, text:'350 + 200 = ?', opts:['450','500','550','600'], ans:'550' },
+  { s:2, text:'560 − 500 = ?', opts:['50','60','70','160'],   ans:'60'  },
+  { s:2, text:'480 + 340 = ?', opts:['720','800','810','820'], ans:'820' },
+  { s:2, text:'625 − 180 = ?', opts:['435','445','455','545'], ans:'445' },
+  { s:2, text:'900 + 900 = ?', opts:['1700','1800','1900','180'], ans:'1800' },
+  { s:2, text:'1000 − 350 = ?', opts:['550','600','650','750'], ans:'650' },
+  { s:2, text:'275 + 125 = ?', opts:['300','390','400','410'], ans:'400' },
+  { s:2, text:'704 − 269 = ?', opts:['425','435','445','535'], ans:'435' },
 
-  /* ── Sectie 3: Meten & Tijd ────────────────────────────────────────── */
-  { s:3, text:'Hoe laat is het?',
-    opts:['3 uur','6 uur','9 uur','12 uur'], ans:'3 uur',
-    vis:{type:'clock',h:3,m:0} },
+  /* ── Sectie 3: Tafels & Delen ─────────────────────────────────────── */
+  { s:3, text:'6 × 7 = ?', opts:['36','40','42','48'], ans:'42' },
+  { s:3, text:'8 × 9 = ?', opts:['63','70','72','81'], ans:'72' },
+  { s:3, text:'7 × 8 = ?', opts:['48','54','56','64'], ans:'56' },
+  { s:3, text:'45 ÷ 9 = ?', opts:['4','5','6','9'], ans:'5' },
+  { s:3, text:'50 : 6 = __ rest __',
+    opts:['8 rest 2','8 rest 1','7 rest 6','9 rest 0'], ans:'8 rest 2' },
+  { s:3, text:'100 : 8 = __ rest __',
+    opts:['11 rest 4','12 rest 4','12 rest 6','13 rest 1'], ans:'12 rest 4' },
 
-  { s:3, text:'Hoe laat is het?',
-    opts:['Half zeven','Half acht','Zeven uur','Acht uur'], ans:'Half acht',
-    vis:{type:'clock',h:7,m:30} },
+  /* ── Sectie 4: Breuken ─────────────────────────────────────────────── */
+  { s:4, text:'Welk deel van de balk is gekleurd?',
+    opts:['1/2','1/4','1/3','2/2'], ans:'1/2',
+    vis:{type:'fraction',num:1,den:2} },
 
-  { s:3, text:'Welke munten maken samen 30 cent?',
-    opts:['3 × 10 cent','1 × 20 cent + 1 × 10 cent','1 × 50 cent','2 × 5 cent + 1 × 20 cent'],
-    ans:'1 × 20 cent + 1 × 10 cent' },
+  { s:4, text:'Welk deel van de balk is gekleurd?',
+    opts:['1/4','1/2','3/4','1/3'], ans:'1/4',
+    vis:{type:'fraction',num:1,den:4} },
 
-  { s:3, text:'Welke lijn is langer?',
-    opts:['Lijn A','Lijn B','Even lang','Ik weet het niet'], ans:'Lijn A',
-    vis:{type:'ruler',lengths:[8,5]} },
+  { s:4, text:'Welk deel van de balk is gekleurd?',
+    opts:['3/4','1/4','2/4','4/4'], ans:'3/4',
+    vis:{type:'fraction',num:3,den:4} },
 
-  { s:3, text:'Wat is waarschijnlijk zwaarder?',
-    opts:['Een appel 🍎','Een potlood ✏️','Even zwaar','Ik weet het niet'],
-    ans:'Een appel 🍎' },
+  { s:4, text:'Wat is meer: 1/2 of 1/4 van dezelfde taart?',
+    opts:['1/2','1/4','Ze zijn gelijk','Ik weet het niet'], ans:'1/2' },
 
-  /* ── Sectie 4: Vormen & Ruimte ─────────────────────────────────────── */
-  { s:4, text:'Welke vorm zie je?',
-    opts:['Cirkel','Vierkant','Driehoek','Rechthoek'], ans:'Cirkel',
-    vis:{type:'shape',name:'cirkel'} },
+  /* ── Sectie 5: Klok & Tijd ─────────────────────────────────────────── */
+  { s:5, text:'Hoe laat is het? (digitaal)',
+    opts:['03:37','03:47','02:37','03:27'], ans:'03:37',
+    vis:{type:'clock',h:3,m:37} },
 
-  { s:4, text:'Welke vorm zie je?',
-    opts:['Cirkel','Vierkant','Driehoek','Rechthoek'], ans:'Driehoek',
-    vis:{type:'shape',name:'driehoek'} },
+  { s:5, text:'Hoe laat is het? (digitaal)',
+    opts:['08:52','08:42','07:52','08:58'], ans:'08:52',
+    vis:{type:'clock',h:8,m:52} },
 
-  { s:4, text:'Waar staat de blauwe stip ten opzichte van de lijn?',
-    opts:['Boven','Onder','Links','Rechts'], ans:'Boven',
-    vis:{type:'spatial'} },
+  { s:5, text:'Het is nu 14:20.\nDe trein vertrekt over 25 minuten.\nHoe laat vertrekt de trein?',
+    opts:['14:35','14:40','14:45','15:05'], ans:'14:45' },
 
-  { s:4, text:'Welke vorm komt als volgende?\n○  □  △  ○  □  __',
-    opts:['○','□','△','☆'], ans:'△' },
+  { s:5, text:'Hoeveel minuten zijn er tussen 09:15 en 09:50?',
+    opts:['25 minuten','30 minuten','35 minuten','45 minuten'], ans:'35 minuten' },
 
-  /* ── Sectie 5: Woordproblemen ───────────────────────────────────────── */
-  { s:5, text:'Mia heeft 5 appels 🍎.\nZe krijgt er nog 3 bij.\nHoeveel appels heeft ze nu?',
-    opts:['6','7','8','9'], ans:'8' },
+  /* ── Sectie 6: Geld & Meten ────────────────────────────────────────── */
+  { s:6, text:'Je koopt een spel van € 12,50\nen betaalt met € 20,-.\nHoeveel krijg je terug?',
+    opts:['€ 6,50','€ 7,50','€ 8,50','€ 7,00'], ans:'€ 7,50' },
 
-  { s:5, text:'Tom had 12 stickers ⭐.\nHij geeft er 4 weg.\nHoeveel stickers heeft hij nog?',
-    opts:['6','7','8','9'], ans:'8' },
+  { s:6, text:'€ 3,50 + € 135,50 = ?',
+    opts:['€ 138,00','€ 139,00','€ 140,00','€ 132,00'], ans:'€ 139,00' },
 
-  { s:5, text:'De trein vertrekt om 9 uur.\nHet is nu 6 uur.\nOver hoeveel uur vertrekt de trein?',
-    opts:['2 uur','3 uur','4 uur','5 uur'], ans:'3 uur' },
+  { s:6, text:'Hoeveel centimeter is 4 meter?',
+    opts:['40 cm','400 cm','4000 cm','4 cm'], ans:'400 cm' },
+
+  { s:6, text:'Een rechthoekig veld is 8 meter lang en 5 meter breed.\nWat is de omtrek?',
+    opts:['13 meter','26 meter','40 meter','20 meter'], ans:'26 meter' },
+
+  /* ── Sectie 7: Woordproblemen ──────────────────────────────────────── */
+  { s:7, text:'Een fietsenwinkel verkoopt 3 dozen met elk 8 fietsbellen 🔔.\nHoeveel fietsbellen zijn dat samen?',
+    opts:['21','22','24','32'], ans:'24' },
+
+  { s:7, text:'Milan heeft 340 knikkers.\nHij verliest er 85 en krijgt er daarna 60 bij.\nHoeveel knikkers heeft hij nu?',
+    opts:['305','310','315','325'], ans:'315' },
+
+  { s:7, text:'Een klas van 28 kinderen wordt verdeeld\nin groepjes van 4.\nHoeveel groepjes zijn dat?',
+    opts:['6','7','8','9'], ans:'7' },
+
+  { s:7, text:'De trein vertrekt om 15:10 en rijdt 50 minuten.\nHoe laat komt de trein aan?',
+    opts:['15:50','16:00','16:10','15:40'], ans:'16:00' },
 ];
 
 /* ── State ───────────────────────────────────────────────────────────── */
@@ -802,11 +795,9 @@ const setProgress = (pct, label, count = '') => {
 const renderVis = v => {
   if (!v) return '';
   const html = (() => {
-    if (v.type === 'clock')  return clockSVG(v.h, v.m);
-    if (v.type === 'dots')   return dotsSVG(v.n);
-    if (v.type === 'shape')  return shapeSVG(v.name);
-    if (v.type === 'ruler')  return rulerSVG(v.lengths);
-    if (v.type === 'spatial') return spatialSVG();
+    if (v.type === 'clock')    return clockSVG(v.h, v.m);
+    if (v.type === 'ruler')    return rulerSVG(v.lengths);
+    if (v.type === 'fraction') return fractionBarSVG(v.num, v.den);
     return '';
   })();
   return html ? `<div class="q-visual">${html}</div>` : '';
@@ -835,10 +826,10 @@ window.showWelcome = () => {
     <div class="welcome">
       <span class="welcome__icon">📐</span>
       <h1 class="welcome__title">Jaartoets Rekenen</h1>
-      <p class="welcome__year">Groep 3 · Schooljaar ${year - 1}–${year}</p>
+      <p class="welcome__year">Groep 5 · Schooljaar ${year - 1}–${year}</p>
       <div class="info-row">
-        <div class="info-tile"><div class="info-tile__num">30</div><div class="info-tile__lbl">Vragen</div></div>
-        <div class="info-tile"><div class="info-tile__num">5</div><div class="info-tile__lbl">Onderdelen</div></div>
+        <div class="info-tile"><div class="info-tile__num">${Q.length}</div><div class="info-tile__lbl">Vragen</div></div>
+        <div class="info-tile"><div class="info-tile__num">${SECTIONS.length}</div><div class="info-tile__lbl">Onderdelen</div></div>
         <div class="info-tile"><div class="info-tile__num">∞</div><div class="info-tile__lbl">Tijd</div></div>
       </div>
       <div class="section-list">${secList}</div>
@@ -854,10 +845,12 @@ window.startTest = () => {
 
 const MOTIV = [
   'Goed bezig! Ga zo door!',
-  'Super! Bijna halverwege!',
+  'Super! Blijf lekker doorgaan!',
   'Jij doet het fantastisch!',
-  'Lekker bezig! Nog even!',
-  'Bijna klaar! Laatste deel!',
+  'Sterk gerekend! Ga zo verder!',
+  'Al meer dan de helft! Ga zo door!',
+  'Bijna klaar! Nog twee delen!',
+  'Laatste deel! Jij kan het!',
 ];
 
 const showSectionSplash = (sId, prevSId) => {
@@ -879,7 +872,7 @@ const showSectionSplash = (sId, prevSId) => {
     <div class="splash">
       <span class="splash__icon">${sec.icon}</span>
       <div class="splash__title">${MOTIV[sId - 1]}</div>
-      <div class="splash__sub">Sectie ${sId} van 5 — <strong>${sec.label}</strong></div>
+      <div class="splash__sub">Sectie ${sId} van ${SECTIONS.length} — <strong>${sec.label}</strong></div>
       ${scoreHTML}
       <button class="btn-primary" onclick="nextQuestion()">Verder →</button>
     </div>`;
@@ -953,9 +946,9 @@ const renderResults = () => {
   animate();
 
   const [emoji, badgeClass, levelText, desc] =
-    total >= 28 ? ['🏆','badge--gold',   'Uitstekend!',      'Helemaal klaar voor groep 4!'] :
-    total >= 23 ? ['🌟','badge--green',  'Goed niveau',      'Prima gedaan! Ga zo door.']    :
-    total >= 15 ? ['👍','badge--blue',   'Ontwikkelend',     'Je maakt goede vooruitgang!']   :
+    total >= 35 ? ['🏆','badge--gold',   'Uitstekend!',      'Helemaal klaar voor groep 6!'] :
+    total >= 28 ? ['🌟','badge--green',  'Goed niveau',      'Prima gedaan! Ga zo door.']    :
+    total >= 19 ? ['👍','badge--blue',   'Ontwikkelend',     'Je maakt goede vooruitgang!']   :
                   ['💪','badge--pink',   'Begin niveau',     'Meer oefening nodig — jij kunt het!'];
 
   const bars = SECTIONS.map(s => {
@@ -971,7 +964,7 @@ const renderResults = () => {
   $card.innerHTML = `
     <div class="result-top">
       <span class="result-emoji">${emoji}</span>
-      <div class="result-score">${total}<sub> / 30</sub></div>
+      <div class="result-score">${total}<sub> / ${Q.length}</sub></div>
       <div class="result-label">${desc}</div>
       <span class="result-badge ${badgeClass}">${levelText}</span>
     </div>

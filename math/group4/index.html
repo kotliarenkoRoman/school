@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Groep 3 · Jaartoets Rekenen</title>
+  <title>Groep 4 · Jaartoets Rekenen</title>
   <style>
     :root {
       --bg:           #f1f5f9;
@@ -555,8 +555,8 @@
       <li class="nav-item nav-dropdown" id="mathDrop">
         <button class="nav-link active" id="mathDropBtn" aria-expanded="false">🧮 Math <span class="caret">▾</span></button>
         <ul class="nav-menu__sub">
-          <li><a class="nav-link active" href="../../math/group3/index.html">🔢 Group 3</a></li>
-          <li><a class="nav-link" href="../../math/group4/index.html">🔢 Group 4</a></li>
+          <li><a class="nav-link" href="../../math/group3/index.html">🔢 Group 3</a></li>
+          <li><a class="nav-link active" href="../../math/group4/index.html">🔢 Group 4</a></li>
           <li><a class="nav-link" href="../../math/group5/index.html">🔢 Group 5</a></li>
         </ul>
       </li>
@@ -567,7 +567,7 @@
 
 <main class="page">
 <header class="site-header">
-  <div class="site-header__eyebrow">Groep 3 · Jaartoets Rekenen</div>
+  <div class="site-header__eyebrow">Groep 4 · Jaartoets Rekenen</div>
   <div class="progress-rail">
     <div class="progress-fill" id="progFill"></div>
   </div>
@@ -648,17 +648,6 @@ const dotsSVG = n => {
   return `<svg viewBox="0 0 100 100" width="140" height="140" xmlns="http://www.w3.org/2000/svg">${dots.join('')}</svg>`;
 };
 
-const shapeSVG = name => {
-  const fill = '#eff6ff', stroke = '#3b82f6', sw = 3;
-  const shapes = {
-    cirkel:     `<circle cx="50" cy="50" r="38" fill="${fill}" stroke="${stroke}" stroke-width="${sw}"/>`,
-    driehoek:   `<polygon points="50,10 90,88 10,88" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" stroke-linejoin="round"/>`,
-    vierkant:   `<rect x="12" y="12" width="76" height="76" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="3"/>`,
-    rechthoek:  `<rect x="6" y="22" width="88" height="56" fill="${fill}" stroke="${stroke}" stroke-width="${sw}" rx="3"/>`,
-  };
-  return `<svg viewBox="0 0 100 100" width="130" height="130" xmlns="http://www.w3.org/2000/svg">${shapes[name]||''}</svg>`;
-};
-
 const rulerSVG = lengths => {
   const maxLen = 10, barH = 22, trackW = 220, labels = ['A','B'];
   const colors = ['#3b82f6','#f87171'];
@@ -673,108 +662,104 @@ const rulerSVG = lengths => {
   return `<svg viewBox="0 0 270 106" width="270" height="106" xmlns="http://www.w3.org/2000/svg">${rows.join('')}</svg>`;
 };
 
-const spatialSVG = () =>
-  `<svg viewBox="0 0 120 90" width="180" height="135" xmlns="http://www.w3.org/2000/svg">
-    <line x1="15" y1="58" x2="105" y2="58" stroke="#cbd5e1" stroke-width="2.5" stroke-linecap="round"/>
-    <circle cx="60" cy="30" r="12" fill="#3b82f6"/>
-    <text x="60" y="78" text-anchor="middle" font-size="10" font-family="system-ui" fill="#94a3b8">lijn</text>
-  </svg>`;
-
 /* ── Data ────────────────────────────────────────────────────────────── */
 const SECTIONS = [
-  { id:1, label:'Getallen',            icon:'🔢', count:8  },
-  { id:2, label:'Optellen & Aftrekken',icon:'➕', count:10 },
-  { id:3, label:'Meten & Tijd',        icon:'⏰', count:5  },
-  { id:4, label:'Vormen & Ruimte',     icon:'🔷', count:4  },
-  { id:5, label:'Woordproblemen',      icon:'📖', count:3  },
+  { id:1, label:'Getallen tot 100',     icon:'🔢', count:7 },
+  { id:2, label:'Optellen & Aftrekken', icon:'➕', count:8 },
+  { id:3, label:'Tafels & Delen',       icon:'✖️', count:6 },
+  { id:4, label:'Klok & Tijd',          icon:'⏰', count:4 },
+  { id:5, label:'Geld & Meten',         icon:'💶', count:4 },
+  { id:6, label:'Woordproblemen',       icon:'📖', count:4 },
 ];
 
 const Q = [
-  /* ── Sectie 1: Getallen ────────────────────────────────────────────── */
-  { s:1, text:'Welk getal ontbreekt?\n14, __, 16',
-    opts:['13','15','17','12'], ans:'15' },
+  /* ── Sectie 1: Getallen tot 100 ───────────────────────────────────── */
+  { s:1, text:'Welk getal ontbreekt?\n38, __, 40',
+    opts:['37','38','39','41'], ans:'39' },
 
   { s:1, text:'Welk getal is het grootst?',
-    opts:['47','74','57','45'], ans:'74' },
+    opts:['63','36','66','60'], ans:'66' },
 
-  { s:1, text:'Is het getal 8 even of oneven?',
-    opts:['Even','Oneven','Geen van beide','Ik weet het niet'], ans:'Even' },
+  { s:1, text:'Rond 47 af op tientallen.',
+    opts:['40','50','45','60'], ans:'50' },
 
-  { s:1, text:'34 = __ tientallen + __ eenheden',
-    opts:['3 + 4','4 + 3','3 + 3','4 + 4'],
-    display:['3 tientallen + 4 eenheden','4 tientallen + 3 eenheden','3 tientallen + 3 eenheden','4 tientallen + 4 eenheden'],
-    ans:'3 + 4' },
+  { s:1, text:'68 = __ tientallen + __ eenheden',
+    opts:['6 + 8','8 + 6','7 + 8','6 + 6'],
+    display:['6 tientallen + 8 eenheden','8 tientallen + 6 eenheden','7 tientallen + 8 eenheden','6 tientallen + 6 eenheden'],
+    ans:'6 + 8' },
 
-  { s:1, text:'Zet van klein naar groot:\n52, 25, 75',
-    opts:['25 → 52 → 75','52 → 25 → 75','75 → 52 → 25','25 → 75 → 52'], ans:'25 → 52 → 75' },
+  { s:1, text:'Zet van klein naar groot:\n81, 18, 45',
+    opts:['18 → 45 → 81','81 → 45 → 18','45 → 18 → 81','18 → 81 → 45'], ans:'18 → 45 → 81' },
 
-  { s:1, text:'Welk getal is "vijftien"?',
-    opts:['50','5','15','51'], ans:'15' },
+  { s:1, text:'Welk getal is "zesenzeventig"?',
+    opts:['67','76','66','86'], ans:'76' },
 
-  { s:1, text:'Hoeveel stippen zie je?',
-    opts:['6','7','8','9'], ans:'7', vis:{type:'dots',n:7} },
-
-  { s:1, text:'Tel verder met stappen van 2:\n4, 6, 8, __',
-    opts:['9','10','11','12'], ans:'10' },
+  { s:1, text:'Tel verder met stappen van 5:\n10, 15, 20, __',
+    opts:['24','25','30','35'], ans:'25' },
 
   /* ── Sectie 2: Optellen & Aftrekken ───────────────────────────────── */
-  { s:2, text:'4 + 3 = ?',  opts:['6','7','8','5'],  ans:'7'  },
-  { s:2, text:'6 + 2 = ?',  opts:['7','8','9','6'],  ans:'8'  },
-  { s:2, text:'5 + 5 = ?',  opts:['9','10','11','8'], ans:'10' },
-  { s:2, text:'3 + 4 = ?',  opts:['5','6','7','8'],  ans:'7'  },
-  { s:2, text:'9 + 1 = ?',  opts:['8','9','10','11'], ans:'10' },
-  { s:2, text:'9 − 4 = ?',  opts:['3','4','5','6'],  ans:'5'  },
-  { s:2, text:'7 − 3 = ?',  opts:['3','4','5','6'],  ans:'4'  },
-  { s:2, text:'10 − 6 = ?', opts:['3','4','5','6'],  ans:'4'  },
-  { s:2, text:'8 + 6 = ?',  opts:['12','13','14','15'], ans:'14' },
-  { s:2, text:'14 − 5 = ?', opts:['7','8','9','10'], ans:'9'  },
+  { s:2, text:'24 + 5 = ?',  opts:['28','29','30','27'], ans:'29' },
+  { s:2, text:'38 + 7 = ?',  opts:['44','45','46','35'], ans:'45' },
+  { s:2, text:'56 − 9 = ?',  opts:['46','47','48','45'], ans:'47' },
+  { s:2, text:'32 + 40 = ?', opts:['62','72','82','71'], ans:'72' },
+  { s:2, text:'70 − 30 = ?', opts:['30','40','50','45'], ans:'40' },
+  { s:2, text:'45 + 25 = ?', opts:['60','65','70','75'], ans:'70' },
+  { s:2, text:'90 − 45 = ?', opts:['35','40','45','55'], ans:'45' },
+  { s:2, text:'27 + 8 = ?',  opts:['34','35','36','33'], ans:'35' },
 
-  /* ── Sectie 3: Meten & Tijd ────────────────────────────────────────── */
-  { s:3, text:'Hoe laat is het?',
-    opts:['3 uur','6 uur','9 uur','12 uur'], ans:'3 uur',
-    vis:{type:'clock',h:3,m:0} },
+  /* ── Sectie 3: Tafels & Delen ─────────────────────────────────────── */
+  { s:3, text:'3 × 4 = ?',  opts:['10','12','14','7'],  ans:'12' },
+  { s:3, text:'5 × 5 = ?',  opts:['20','25','30','15'], ans:'25' },
+  { s:3, text:'2 × 8 = ?',  opts:['14','16','18','10'], ans:'16' },
+  { s:3, text:'10 × 4 = ?', opts:['30','40','50','14'], ans:'40' },
+  { s:3, text:'12 ÷ 3 = ?', opts:['3','4','5','6'], ans:'4' },
+  { s:3, text:'Verdeel 20 snoepjes 🍬 eerlijk over 5 kinderen.\nHoeveel krijgt ieder kind?',
+    opts:['3','4','5','6'], ans:'4' },
 
-  { s:3, text:'Hoe laat is het?',
-    opts:['Half zeven','Half acht','Zeven uur','Acht uur'], ans:'Half acht',
-    vis:{type:'clock',h:7,m:30} },
+  /* ── Sectie 4: Klok & Tijd ─────────────────────────────────────────── */
+  { s:4, text:'Hoe laat is het?',
+    opts:['Kwart over vier','Kwart voor vier','Half vijf','Vier uur'], ans:'Kwart over vier',
+    vis:{type:'clock',h:4,m:15} },
 
-  { s:3, text:'Welke munten maken samen 30 cent?',
-    opts:['3 × 10 cent','1 × 20 cent + 1 × 10 cent','1 × 50 cent','2 × 5 cent + 1 × 20 cent'],
-    ans:'1 × 20 cent + 1 × 10 cent' },
+  { s:4, text:'Hoe laat is het?',
+    opts:['Kwart voor tien','Kwart over negen','Half tien','Tien uur'], ans:'Kwart voor tien',
+    vis:{type:'clock',h:9,m:45} },
 
-  { s:3, text:'Welke lijn is langer?',
+  { s:4, text:'Hoe laat is het?',
+    opts:['5 over twee','5 voor twee','10 over twee','Twee uur'], ans:'5 over twee',
+    vis:{type:'clock',h:2,m:5} },
+
+  { s:4, text:'Hoe laat is het?',
+    opts:['10 voor zeven','10 over zes','Half zeven','Zeven uur'], ans:'10 voor zeven',
+    vis:{type:'clock',h:6,m:50} },
+
+  /* ── Sectie 5: Geld & Meten ───────────────────────────────────────── */
+  { s:5, text:'Je betaalt met een briefje van 10 euro voor een boek van 6 euro.\nHoeveel euro krijg je terug?',
+    opts:['3 euro','4 euro','5 euro','6 euro'], ans:'4 euro' },
+
+  { s:5, text:'Welke munten maken samen 45 cent?',
+    opts:['2 × 20 cent + 1 × 5 cent','1 × 50 cent','3 × 10 cent + 1 × 5 cent','4 × 10 cent'],
+    ans:'2 × 20 cent + 1 × 5 cent' },
+
+  { s:5, text:'Welke lijn is langer?',
     opts:['Lijn A','Lijn B','Even lang','Ik weet het niet'], ans:'Lijn A',
-    vis:{type:'ruler',lengths:[8,5]} },
+    vis:{type:'ruler',lengths:[9,4]} },
 
-  { s:3, text:'Wat is waarschijnlijk zwaarder?',
-    opts:['Een appel 🍎','Een potlood ✏️','Even zwaar','Ik weet het niet'],
-    ans:'Een appel 🍎' },
+  { s:5, text:'Wat weegt ongeveer 1 kilo?',
+    opts:['Een pak suiker 📦','Een veer 🪶','Een schaar ✂️','Een knikker ⚪'], ans:'Een pak suiker 📦' },
 
-  /* ── Sectie 4: Vormen & Ruimte ─────────────────────────────────────── */
-  { s:4, text:'Welke vorm zie je?',
-    opts:['Cirkel','Vierkant','Driehoek','Rechthoek'], ans:'Cirkel',
-    vis:{type:'shape',name:'cirkel'} },
+  /* ── Sectie 6: Woordproblemen ─────────────────────────────────────── */
+  { s:6, text:'Sam heeft 45 knikkers.\nHij krijgt er 8 bij van zijn opa\nen geeft er daarna 6 weg aan zijn zus.\nHoeveel knikkers heeft hij nu?',
+    opts:['45','46','47','48'], ans:'47' },
 
-  { s:4, text:'Welke vorm zie je?',
-    opts:['Cirkel','Vierkant','Driehoek','Rechthoek'], ans:'Driehoek',
-    vis:{type:'shape',name:'driehoek'} },
+  { s:6, text:'Er staan 3 dozen met elk 5 appels 🍎.\nHoeveel appels zijn dat samen?',
+    opts:['10','12','15','18'], ans:'15' },
 
-  { s:4, text:'Waar staat de blauwe stip ten opzichte van de lijn?',
-    opts:['Boven','Onder','Links','Rechts'], ans:'Boven',
-    vis:{type:'spatial'} },
+  { s:6, text:'Emma heeft 2 euro.\nZe krijgt van oma nog 1 euro en 50 cent.\nHoeveel heeft ze nu?',
+    opts:['2 euro en 50 cent','3 euro','3 euro en 50 cent','4 euro'], ans:'3 euro en 50 cent' },
 
-  { s:4, text:'Welke vorm komt als volgende?\n○  □  △  ○  □  __',
-    opts:['○','□','△','☆'], ans:'△' },
-
-  /* ── Sectie 5: Woordproblemen ───────────────────────────────────────── */
-  { s:5, text:'Mia heeft 5 appels 🍎.\nZe krijgt er nog 3 bij.\nHoeveel appels heeft ze nu?',
-    opts:['6','7','8','9'], ans:'8' },
-
-  { s:5, text:'Tom had 12 stickers ⭐.\nHij geeft er 4 weg.\nHoeveel stickers heeft hij nog?',
-    opts:['6','7','8','9'], ans:'8' },
-
-  { s:5, text:'De trein vertrekt om 9 uur.\nHet is nu 6 uur.\nOver hoeveel uur vertrekt de trein?',
-    opts:['2 uur','3 uur','4 uur','5 uur'], ans:'3 uur' },
+  { s:6, text:'De bus vertrekt om half 4.\nHet is nu kwart over 3.\nHoeveel minuten moet je nog wachten?',
+    opts:['10 minuten','15 minuten','20 minuten','30 minuten'], ans:'15 minuten' },
 ];
 
 /* ── State ───────────────────────────────────────────────────────────── */
@@ -804,9 +789,7 @@ const renderVis = v => {
   const html = (() => {
     if (v.type === 'clock')  return clockSVG(v.h, v.m);
     if (v.type === 'dots')   return dotsSVG(v.n);
-    if (v.type === 'shape')  return shapeSVG(v.name);
     if (v.type === 'ruler')  return rulerSVG(v.lengths);
-    if (v.type === 'spatial') return spatialSVG();
     return '';
   })();
   return html ? `<div class="q-visual">${html}</div>` : '';
@@ -835,10 +818,10 @@ window.showWelcome = () => {
     <div class="welcome">
       <span class="welcome__icon">📐</span>
       <h1 class="welcome__title">Jaartoets Rekenen</h1>
-      <p class="welcome__year">Groep 3 · Schooljaar ${year - 1}–${year}</p>
+      <p class="welcome__year">Groep 4 · Schooljaar ${year - 1}–${year}</p>
       <div class="info-row">
-        <div class="info-tile"><div class="info-tile__num">30</div><div class="info-tile__lbl">Vragen</div></div>
-        <div class="info-tile"><div class="info-tile__num">5</div><div class="info-tile__lbl">Onderdelen</div></div>
+        <div class="info-tile"><div class="info-tile__num">${Q.length}</div><div class="info-tile__lbl">Vragen</div></div>
+        <div class="info-tile"><div class="info-tile__num">${SECTIONS.length}</div><div class="info-tile__lbl">Onderdelen</div></div>
         <div class="info-tile"><div class="info-tile__num">∞</div><div class="info-tile__lbl">Tijd</div></div>
       </div>
       <div class="section-list">${secList}</div>
@@ -857,7 +840,8 @@ const MOTIV = [
   'Super! Bijna halverwege!',
   'Jij doet het fantastisch!',
   'Lekker bezig! Nog even!',
-  'Bijna klaar! Laatste deel!',
+  'Bijna klaar! Nog twee delen!',
+  'Laatste deel! Jij kan het!',
 ];
 
 const showSectionSplash = (sId, prevSId) => {
@@ -879,7 +863,7 @@ const showSectionSplash = (sId, prevSId) => {
     <div class="splash">
       <span class="splash__icon">${sec.icon}</span>
       <div class="splash__title">${MOTIV[sId - 1]}</div>
-      <div class="splash__sub">Sectie ${sId} van 5 — <strong>${sec.label}</strong></div>
+      <div class="splash__sub">Sectie ${sId} van ${SECTIONS.length} — <strong>${sec.label}</strong></div>
       ${scoreHTML}
       <button class="btn-primary" onclick="nextQuestion()">Verder →</button>
     </div>`;
@@ -953,9 +937,9 @@ const renderResults = () => {
   animate();
 
   const [emoji, badgeClass, levelText, desc] =
-    total >= 28 ? ['🏆','badge--gold',   'Uitstekend!',      'Helemaal klaar voor groep 4!'] :
-    total >= 23 ? ['🌟','badge--green',  'Goed niveau',      'Prima gedaan! Ga zo door.']    :
-    total >= 15 ? ['👍','badge--blue',   'Ontwikkelend',     'Je maakt goede vooruitgang!']   :
+    total >= 31 ? ['🏆','badge--gold',   'Uitstekend!',      'Helemaal klaar voor groep 5!'] :
+    total >= 25 ? ['🌟','badge--green',  'Goed niveau',      'Prima gedaan! Ga zo door.']    :
+    total >= 17 ? ['👍','badge--blue',   'Ontwikkelend',     'Je maakt goede vooruitgang!']   :
                   ['💪','badge--pink',   'Begin niveau',     'Meer oefening nodig — jij kunt het!'];
 
   const bars = SECTIONS.map(s => {
@@ -971,7 +955,7 @@ const renderResults = () => {
   $card.innerHTML = `
     <div class="result-top">
       <span class="result-emoji">${emoji}</span>
-      <div class="result-score">${total}<sub> / 30</sub></div>
+      <div class="result-score">${total}<sub> / ${Q.length}</sub></div>
       <div class="result-label">${desc}</div>
       <span class="result-badge ${badgeClass}">${levelText}</span>
     </div>
