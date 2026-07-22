@@ -33,9 +33,16 @@
       min-height: 100dvh;
       display: flex;
       flex-direction: column;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .page {
+      flex: 1;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
       align-items: center;
       padding: 28px 16px 48px;
-      -webkit-font-smoothing: antialiased;
     }
 
     h1 {
@@ -191,6 +198,13 @@
       color: var(--error);
     }
 
+    .exercise .answer-hint {
+      font-weight: 800;
+      color: var(--success);
+      font-variant-numeric: tabular-nums;
+      white-space: nowrap;
+    }
+
     /* ── Bottom controls / stats ─────────────────────────────────────── */
     .controls {
       display: flex;
@@ -235,10 +249,313 @@
 
     .stats .stat-success { color: var(--success); }
     .stats .stat-error { color: var(--error); }
+
+    /* ── Results popup ────────────────────────────────────────────────── */
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .55);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      padding: 24px 16px;
+      overflow-y: auto;
+    }
+
+    .modal-overlay.open {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+    }
+
+    .modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 520px;
+      margin: auto;
+      background: var(--surface);
+      border-radius: var(--r-lg);
+      box-shadow: var(--shadow-md);
+      padding: 28px 24px;
+      text-align: center;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      width: 34px;
+      height: 34px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--bg);
+      border: none;
+      border-radius: 50%;
+      color: var(--text-muted);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      transition: background .15s, color .15s;
+    }
+
+    .modal-close:hover {
+      background: var(--error-soft);
+      color: var(--error);
+    }
+
+    .modal-card h2 {
+      font-size: 24px;
+      font-weight: 800;
+      margin-bottom: 20px;
+    }
+
+    .modal-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .summary-tile {
+      background: var(--bg);
+      border-radius: var(--r-md);
+      padding: 14px 8px;
+    }
+
+    .summary-tile .value {
+      font-size: 26px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .summary-tile .label {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .summary-tile.good .value { color: var(--success); }
+    .summary-tile.bad .value { color: var(--error); }
+
+    .mistakes {
+      text-align: left;
+      margin-bottom: 24px;
+    }
+
+    .mistakes h3 {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .mistake-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 10px 12px;
+      border-radius: var(--r-sm);
+      background: var(--error-soft);
+      margin-bottom: 8px;
+      font-size: 15px;
+      font-weight: 600;
+    }
+
+    .mistake-row .given {
+      color: var(--error);
+      text-decoration: line-through;
+      font-weight: 700;
+    }
+
+    .mistake-row .given.empty {
+      text-decoration: none;
+      font-style: italic;
+      opacity: .7;
+    }
+
+    .mistake-row .right {
+      color: var(--success);
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .all-good {
+      color: var(--success);
+      font-weight: 700;
+      font-size: 16px;
+      margin-bottom: 24px;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .modal-actions .action-btn {
+      display: inline-block;
+    }
+
+    .action-btn.review {
+      background: var(--text-muted);
+    }
+
+    /* ── Topbar navigation ─────────────────────────────────────────────── */
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      width: 100%;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .topbar__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .topbar__brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 800;
+      font-size: 17px;
+      color: var(--text);
+      text-decoration: none;
+      white-space: nowrap;
+    }
+
+    .topbar__brand .logo { font-size: 22px; }
+
+    .nav-toggle {
+      display: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 8px;
+      border-radius: var(--r-sm);
+      color: var(--text);
+    }
+
+    .nav-toggle svg { display: block; }
+
+    .nav-menu {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-item { position: relative; }
+
+    .nav-link {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border-radius: var(--r-sm);
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-muted);
+      text-decoration: none;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: inherit;
+      transition: background .15s, color .15s;
+      white-space: nowrap;
+    }
+
+    .nav-link:hover { background: var(--primary-soft); color: var(--primary); }
+    .nav-link.active { color: var(--primary); background: var(--primary-soft); }
+    .nav-link .caret { font-size: 10px; transition: transform .2s; }
+
+    .nav-menu__sub {
+      position: absolute;
+      top: calc(100% + 6px);
+      left: 0;
+      min-width: 190px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--r-md);
+      box-shadow: var(--shadow-md);
+      padding: 6px;
+      list-style: none;
+      display: none;
+    }
+
+    .nav-dropdown.open > .nav-menu__sub { display: block; }
+    .nav-dropdown.open .caret { transform: rotate(180deg); }
+    .nav-menu__sub .nav-link { color: var(--text); width: 100%; }
+
+    @media (min-width: 721px) {
+      .nav-dropdown:hover > .nav-menu__sub { display: block; }
+      .nav-dropdown:hover .caret { transform: rotate(180deg); }
+    }
+
+    @media (max-width: 720px) {
+      .nav-toggle { display: inline-flex; }
+      .nav-menu {
+        position: absolute;
+        top: 60px;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 2px;
+        background: var(--surface);
+        border-bottom: 1px solid var(--border);
+        box-shadow: var(--shadow-md);
+        padding: 10px 12px 16px;
+        display: none;
+      }
+      .nav-menu.open { display: flex; }
+      .nav-link { padding: 12px 14px; font-size: 16px; }
+      .nav-menu__sub {
+        position: static;
+        box-shadow: none;
+        border: none;
+        padding: 2px 0 2px 14px;
+        min-width: 0;
+      }
+    }
   </style>
 </head>
 <body>
 
+  <nav class="topbar">
+    <div class="topbar__inner">
+      <a class="topbar__brand" href="../../index.html">
+        <span class="logo">📚</span> School
+      </a>
+      <button class="nav-toggle" id="navToggle" aria-label="Menu" aria-expanded="false">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+      </button>
+      <ul class="nav-menu" id="navMenu">
+        <li class="nav-item"><a class="nav-link" href="../../index.html">🏠 Home</a></li>
+        <li class="nav-item nav-dropdown" id="mathDrop">
+          <button class="nav-link" id="mathDropBtn" aria-expanded="false">🧮 Math <span class="caret">▾</span></button>
+          <ul class="nav-menu__sub">
+            <li><a class="nav-link" href="../../math/group3/index.html">🔢 Group 3</a></li>
+          </ul>
+        </li>
+        <li class="nav-item"><a class="nav-link active" href="../../math/multiplication_table/index.html">✖️ Multiplication Table</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <main class="page">
   <h1>Tafels werkblad · Training</h1>
 
   <div id="setup">
@@ -259,7 +576,58 @@
     </div>
   </div>
 
+  </main>
+
+  <div class="modal-overlay" id="resultModal">
+    <div class="modal-card">
+      <button class="modal-close" id="modalCloseBtn" aria-label="Sluiten">&times;</button>
+      <h2>Resultaten</h2>
+      <div class="modal-summary">
+        <div class="summary-tile good">
+          <div class="value" id="mGood">0</div>
+          <div class="label">Goed</div>
+        </div>
+        <div class="summary-tile bad">
+          <div class="value" id="mBad">0</div>
+          <div class="label">Fout</div>
+        </div>
+        <div class="summary-tile">
+          <div class="value" id="mTime">00:00</div>
+          <div class="label">Tijd</div>
+        </div>
+      </div>
+      <div class="mistakes" id="mistakesList"></div>
+      <div class="modal-actions">
+        <button class="action-btn review" id="reviewBtn">Bekijk werkblad</button>
+        <button class="action-btn restart" id="modalRestartBtn" style="display:inline-block">Opnieuw</button>
+      </div>
+    </div>
+  </div>
+
   <script>
+    /* ── Topbar interactions ────────────────────────────────────────────── */
+    (function () {
+      const toggle = document.getElementById('navToggle');
+      const menu = document.getElementById('navMenu');
+      const drop = document.getElementById('mathDrop');
+      const dropBtn = document.getElementById('mathDropBtn');
+
+      toggle.addEventListener('click', () => {
+        const open = menu.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open);
+      });
+
+      dropBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = drop.classList.toggle('open');
+        dropBtn.setAttribute('aria-expanded', open);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!drop.contains(e.target)) drop.classList.remove('open');
+      });
+    })();
+
     const numberGrid = document.getElementById('numberGrid');
     const startBtn = document.getElementById('startBtn');
     const setupView = document.getElementById('setup');
@@ -269,6 +637,14 @@
     const restartBtn = document.getElementById('restartBtn');
     const statsEl = document.getElementById('stats');
     const timerEl = document.getElementById('timer');
+    const resultModal = document.getElementById('resultModal');
+    const mGood = document.getElementById('mGood');
+    const mBad = document.getElementById('mBad');
+    const mTime = document.getElementById('mTime');
+    const mistakesList = document.getElementById('mistakesList');
+    const reviewBtn = document.getElementById('reviewBtn');
+    const modalRestartBtn = document.getElementById('modalRestartBtn');
+    const modalCloseBtn = document.getElementById('modalCloseBtn');
 
     const BLOCK_COUNT = 9;
     const ROWS_PER_BLOCK = 5;
@@ -298,6 +674,9 @@
     startBtn.addEventListener('click', startTest);
     finishBtn.addEventListener('click', finishTest);
     restartBtn.addEventListener('click', restartTest);
+    modalRestartBtn.addEventListener('click', restartTest);
+    reviewBtn.addEventListener('click', () => resultModal.classList.remove('open'));
+    modalCloseBtn.addEventListener('click', () => resultModal.classList.remove('open'));
 
     function randomInt(min, max) {
       return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -393,20 +772,37 @@
 
       let correctCount = 0;
       let incorrectCount = 0;
+      const mistakes = [];
 
       document.querySelectorAll('.exercise').forEach(row => {
         const input = row.querySelector('input');
         const correctAnswer = Number(input.dataset.answer);
-        const userAnswer = Number(input.value);
-        const isCorrect = input.value.trim() !== '' && userAnswer === correctAnswer;
+        const rawValue = input.value.trim();
+        const userAnswer = Number(rawValue);
+        const isCorrect = rawValue !== '' && userAnswer === correctAnswer;
 
         row.classList.remove('correct', 'incorrect');
+        const oldHint = row.querySelector('.answer-hint');
+        if (oldHint) oldHint.remove();
+
         if (isCorrect) {
           row.classList.add('correct');
           correctCount++;
         } else {
           row.classList.add('incorrect');
           incorrectCount++;
+
+          // Show the right answer to the right side of the input
+          const hint = document.createElement('span');
+          hint.className = 'answer-hint';
+          hint.textContent = `→ ${correctAnswer}`;
+          input.insertAdjacentElement('afterend', hint);
+
+          mistakes.push({
+            label: row.querySelector('span').textContent,
+            given: rawValue,
+            answer: correctAnswer
+          });
         }
         input.disabled = true;
       });
@@ -420,12 +816,39 @@
         <div class="stat-line stat-error">Fout: ${incorrectCount}</div>
         <div class="stat-line">Tijd: ${formatTime(elapsedSeconds)}</div>
       `;
+
+      showResultModal(correctCount, incorrectCount, elapsedSeconds, mistakes);
+    }
+
+    function showResultModal(correctCount, incorrectCount, elapsedSeconds, mistakes) {
+      mGood.textContent = correctCount;
+      mBad.textContent = incorrectCount;
+      mTime.textContent = formatTime(elapsedSeconds);
+
+      if (mistakes.length === 0) {
+        mistakesList.innerHTML = '<div class="all-good">Alles goed! 🎉</div>';
+      } else {
+        const rows = mistakes.map(m => {
+          const given = m.given === ''
+            ? '<span class="given empty">leeg</span>'
+            : `<span class="given">${m.given}</span>`;
+          return `
+            <div class="mistake-row">
+              <span>${m.label} ${given}</span>
+              <span class="right">${m.answer}</span>
+            </div>`;
+        }).join('');
+        mistakesList.innerHTML = `<h3>Fouten (${mistakes.length})</h3>${rows}`;
+      }
+
+      resultModal.classList.add('open');
     }
 
     function restartTest() {
       clearInterval(timerInterval);
       timerEl.textContent = '00:00';
       statsEl.style.display = 'none';
+      resultModal.classList.remove('open');
       blocksGrid.innerHTML = '';
       testView.style.display = 'none';
       setupView.style.display = 'block';
